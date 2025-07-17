@@ -92,3 +92,4 @@ vine==5.1.0
 voluptuous==0.15.2
 zc.lockfile==3.0.post1
 zstandard==0.23.0
+prefect==3.4.8

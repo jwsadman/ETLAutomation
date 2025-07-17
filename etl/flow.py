@@ -1,11 +1,19 @@
-
 from prefect import flow
-from etl.langgraph_etl import build_etl_graph
+from .config import FILE_PATH, DB_URL, TABLE
+from .langgraph_etl import build_etl_graph
 
-@flow(log_prints=True)
-def run_etl_pipeline(file_path: str, table: str, conn: str):
+@flow(name="run-etl-pipeline", log_prints=True)
+def run_etl_pipeline(
+    file_path: str = FILE_PATH,
+    table: str = TABLE,
+    conn: str = DB_URL,
+):
+    print(f"[Flow] file={file_path} table={table} conn={conn}")
     etl_graph = build_etl_graph()
-    etl_graph.invoke({"file_path": file_path, "table": table, "conn": conn})
+    result = etl_graph.invoke({"file_path": file_path, "table": table, "conn": conn})
+    print("[Flow] result:", result)
 
 if __name__ == "__main__":
-    run_etl_pipeline("car_prices.csv", "cleaned_data", "postgresql://postgres:admin123@localhost:5432/mydb")
+    run_etl_pipeline()
+
+

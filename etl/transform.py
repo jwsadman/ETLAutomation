@@ -1,17 +1,12 @@
-
-from etl.llm_agent import query_groq
 import pandas as pd
+from .rules import get_llm_rules
+from .apply_rules import apply_llm_rules
 
-def transform_with_llm(df: pd.DataFrame) -> pd.DataFrame:
-    prompt = f"""
-    You are a senior data engineer.
-    Clean the following table, handle missing values,remove duplicates,fix data types, add obvious derived features, and suggest fixes.
+def transform_with_llm(df: pd.DataFrame, debug=False) -> pd.DataFrame:
+    rules = get_llm_rules(df)
+    if debug:
+        import pprint; pprint.pprint(rules)
+    cleaned = apply_llm_rules(df, rules)
+    return cleaned
 
-    DataFrame:
-    {df.head(5).to_csv(index=False)}
 
-    Respond with cleaned column names and transformations in CSV format.
-    """
-    response = query_groq(prompt)
-    from io import StringIO
-    return pd.read_csv(StringIO(response))
