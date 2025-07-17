@@ -53,6 +53,7 @@ GROQ_MODEL=llama-3.1-8b-instant
 DB_URL=your actual PostgreSQL DB credentials
 
 FILE_PATH=your CSV file path
+
 TABLE=DB table name
 
 4. Run the ETL Pipeline
